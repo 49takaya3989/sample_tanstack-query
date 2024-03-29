@@ -1,7 +1,7 @@
-export const pokemonKeys = {
-  all: ['pokeapi'] as const,
-  lists: () => [...pokemonKeys.all, 'list'] as const,
-  list: (filters: string) => [...pokemonKeys.lists(), { filters }] as const,
-  // details: () => [...pokemonKeys.all, 'detail'] as const,
-  // detail: (id: number) => [...pokemonKeys.details(), id] as const,
+export const todoKeys = {
+  all: ['todos'] as const,
+  lists: () => [...todoKeys.all, 'list'] as const,
+  list: (filters: string) => [...todoKeys.lists(), { filters }] as const,
+  details: () => [...todoKeys.all, 'detail'] as const,
+  detail: (id: number) => [...todoKeys.details(), id] as const,
 }

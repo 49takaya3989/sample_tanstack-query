@@ -1,35 +1,72 @@
-import { ComponentProps, useState } from 'react';
 import './App.css'
-import { useBooks } from './service/book'
+import React, { FormEvent, useCallback, useState } from 'react';
+import { useCreateTask, useDeleteTask, useLoadTasks, useToggleCompleteTask } from './service/book';
+import { Task } from './service/book/type';
 
-function App() {
-  const [searchWord, setSearchWord] = useState('');
-  const {data, refetch} = useBooks(searchWord);
+const App: React.FC = () => {
+  const { data, isPending } = useLoadTasks()
+  const { mutateCreate } = useCreateTask()
+  const { mutateDelete } = useDeleteTask()
+  const { mutateToggleComplete } = useToggleCompleteTask()
 
-  const onSubmit:ComponentProps<'form'>["onSubmit"] = (e) => {
-    e.preventDefault();
-    refetch();
-  }
+  const [newValue, setNewValue] = useState('')
+
+  const toggleComplete = useCallback(
+    (task: Task) => {
+      mutateToggleComplete.mutate(task)
+    },
+    [mutateToggleComplete]
+  )
+
+  const deleteTask = useCallback(
+    (taskId: string) => {
+      mutateDelete.mutate(taskId)
+    },
+    [mutateDelete]
+  )
+
+  const submitHandler = useCallback(
+    (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      mutateCreate.mutate(
+        newValue,
+        { onSuccess: () => setNewValue('') }
+      );
+    },
+    [mutateCreate, newValue]
+  )
 
   return (
     <div>
-      <form onSubmit={onSubmit}>
-        <input type="text" name='text' value={searchWord} onChange={(val) => setSearchWord(val.currentTarget.value)} />
-        <button type='submit'>検索</button>
+      <form onSubmit={submitHandler}>
+        <input
+          type="text"
+          value={newValue}
+          onChange={(e) => setNewValue(e.target.value)}
+          placeholder="Add a new task"
+        />
+        <button>Add Task</button>
       </form>
-
-      <h1>LIST</h1>
-      {
-        data && data.items.length > 0
-        ? (
-          <ul>
-            {data?.items.map(item => <li key={item.id}>{item.volumeInfo.title}</li>)}
-          </ul>
+      {isPending
+        ? '...loading'
+        : (
+          <div>
+            {data && data.map((task) => (
+              <div key={task.id}>
+                <input
+                  type="checkbox"
+                  checked={task.completed}
+                  onChange={() => toggleComplete(task)}
+                  />
+                {task.task}
+                <button onClick={() => deleteTask(task.id)}>Delete</button>
+              </div>
+            ))}
+          </div>
         )
-        : undefined
       }
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
