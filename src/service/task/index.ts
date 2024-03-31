@@ -17,7 +17,7 @@ export const useGetTaskById = () => {
   const id = params.id ?? ''
 
   const { data, isSuccess, isPending, isError } = useQuery({
-    queryKey: todoKeys.list(id),
+    queryKey: todoKeys.detail(id),
     queryFn: () => getTaskById(id),
     enabled: !!id
   })

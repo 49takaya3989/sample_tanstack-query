@@ -3,5 +3,5 @@ export const todoKeys = {
   lists: () => [...todoKeys.all, 'list'] as const,
   list: (filters: string | undefined) => [...todoKeys.lists(), { filters }] as const,
   details: () => [...todoKeys.all, 'detail'] as const,
-  detail: (id: number) => [...todoKeys.details(), id] as const,
+  detail: (id: string | number) => [...todoKeys.details(), id] as const,
 }
