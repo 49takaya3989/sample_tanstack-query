@@ -1,3 +1,2 @@
-Tanstack queryの素振りのためのリポジトリ。
-今回は、ポケモンAPIを使ってやる。
-https://pokeapi.co/
+# 関連資料
+https://zenn.dev/takaya39/articles/b7931335829487
