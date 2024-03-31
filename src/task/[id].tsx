@@ -1,10 +1,7 @@
-import { useParams } from 'react-router-dom';
 import { useGetTaskById } from '../service/task';
 
 function Task() {
-  const params = useParams();
-  const id = params.id ?? ''
-  const { data, isPending } = useGetTaskById(id)
+  const { data, isPending } = useGetTaskById()
 
   if (isPending) return <p>loading...</p>
 
