@@ -1,7 +1,7 @@
 import './App.css'
 import React, { FormEvent, useCallback, useState } from 'react';
-import { useCreateTask, useDeleteTask, useLoadTasks, useToggleCompleteTask } from './service/book';
-import { Task } from './service/book/type';
+import { useCreateTask, useDeleteTask, useLoadTasks, useToggleCompleteTask } from './service/task';
+import { Task } from './service/task/type';
 
 const App: React.FC = () => {
   const { data, isPending } = useLoadTasks()
