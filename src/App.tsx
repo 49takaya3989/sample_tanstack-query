@@ -2,6 +2,7 @@ import './App.css'
 import React, { FormEvent, useCallback, useState } from 'react';
 import { useCreateTask, useDeleteTask, useLoadTasks, useToggleCompleteTask } from './service/task';
 import { Task } from './service/task/type';
+import { Link } from 'react-router-dom';
 
 const App: React.FC = () => {
   const { data, isPending } = useLoadTasks()
@@ -58,7 +59,9 @@ const App: React.FC = () => {
                   checked={task.completed}
                   onChange={() => toggleComplete(task)}
                   />
-                {task.task}
+                  <Link to={`/task/${task.id}`}>
+                    {task.task}
+                  </Link>
                 <button onClick={() => deleteTask(task.id)}>Delete</button>
               </div>
             ))}

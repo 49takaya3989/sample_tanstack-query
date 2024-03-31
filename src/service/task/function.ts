@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { Task } from './type';
 
@@ -9,6 +9,11 @@ export const loadTasks = async () =>
     .then(res => res.docs.map(el => (
       {...el.data(), id: el.id} as Task
     )));
+
+export const getTaskById = async (taskId: string) =>
+  await getDoc(doc(db, "tasks", taskId)).then(res => (
+    {...res.data(), id: res.id} as Task
+  ));
 
 export const createTask = async (newTask: string) =>
   await addDoc(tasksCollectionRef, { task: newTask, completed: false });

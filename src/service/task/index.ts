@@ -1,11 +1,21 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { todoKeys } from './key'
-import { createTask, deleteTask, loadTasks, toggleCompleteTask } from './function'
+import { createTask, deleteTask, getTaskById, loadTasks, toggleCompleteTask } from './function'
 
 export const useLoadTasks = () => {
   const { data, isSuccess, isPending, isError } = useQuery({
     queryKey: todoKeys.lists(),
     queryFn: loadTasks,
+  })
+
+  return { data, isSuccess, isPending, isError }
+}
+
+export const useGetTaskById = (taskId: string) => {
+  const { data, isSuccess, isPending, isError } = useQuery({
+    queryKey: todoKeys.list(taskId),
+    queryFn: () => getTaskById(taskId),
+    enabled: !!taskId
   })
 
   return { data, isSuccess, isPending, isError }
